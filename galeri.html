@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri — Pyramid Oasis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #061b33; --deep: #0a2545; --ocean: #0d5fa3;
+      --wave: #1a9aef; --aqua: #00c8e0; --gold: #f0b429;
+      --white: #ffffff; --muted: #5a7a90;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px; transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(6,27,51,0.96); backdrop-filter: blur(20px);
+      padding: 14px 48px; border-bottom: 1px solid rgba(26,154,239,0.15);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+      letter-spacing: 2px; color: var(--white);
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .nav-logo span { color: var(--aqua); }
+    .nav-logo .wave-icon {
+      width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+      border: 2px solid var(--aqua); box-shadow: 0 0 10px rgba(0,200,224,0.4); flex-shrink: 0;
+    }
+    .nav-logo .wave-icon img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--aqua); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy) !important; padding: 10px 22px; border-radius: 100px;
+      font-weight: 700 !important; font-size: 0.85rem !important;
+    }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0;
+      background: var(--navy); padding: 80px 32px 40px; z-index: 99;
+      flex-direction: column; border-bottom: 2px solid rgba(26,154,239,0.2);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--white); text-decoration: none; font-size: 1.3rem; font-weight: 500; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s, padding-left 0.2s; }
+    .mobile-menu a:hover { color: var(--aqua); padding-left: 8px; }
+
+    /* HERO */
+    .page-hero {
+      min-height: 44vh; display: flex; align-items: flex-end; padding-top: 80px;
+      position: relative; overflow: hidden; background: var(--navy);
+    }
+    .page-hero-bg {
+      position: absolute; inset: -20px;
+      background: url('foto_profil.jpeg') center/cover no-repeat;
+      opacity: 0.2; filter: blur(3px);
+    }
+    .page-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(6,27,51,0.3) 0%, rgba(6,27,51,0.95) 100%);
+    }
+    .page-hero-content { position: relative; z-index: 2; padding: 0 48px 60px; width: 100%; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .breadcrumb a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--aqua); }
+    .breadcrumb span { color: var(--aqua); }
+    .page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 7vw, 6rem); letter-spacing: 4px; line-height: 0.9; }
+    .page-hero h1 em { font-style: normal; color: var(--aqua); }
+    .page-hero-sub { font-size: 1rem; color: rgba(255,255,255,0.55); font-weight: 300; margin-top: 12px; max-width: 500px; }
+
+    /* CONTENT */
+    .page-content { max-width: 1200px; margin: 0 auto; padding: 72px 48px 80px; }
+
+    /* FILTER */
+    .filter-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 40px; flex-wrap: wrap; gap: 16px;
+    }
+    .filter-title { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--white); }
+    .filter-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btn {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6); padding: 9px 20px; border-radius: 100px;
+      font-size: 0.84rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0,200,224,0.1); border-color: rgba(0,200,224,0.35); color: var(--aqua);
+    }
+
+    /* MASONRY GRID */
+    .galeri-grid {
+      columns: 3; column-gap: 16px; margin-bottom: 40px;
+    }
+    .galeri-item {
+      break-inside: avoid; margin-bottom: 16px;
+      border-radius: 16px; overflow: hidden; position: relative;
+      background: var(--deep); cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .galeri-item:hover { transform: scale(1.02); }
+    .galeri-item:hover .galeri-overlay { opacity: 1; }
+    .galeri-item.hidden { opacity: 0; pointer-events: none; height: 0; margin: 0; overflow: hidden; }
+
+    .galeri-placeholder {
+      width: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, rgba(13,95,163,0.25), rgba(0,200,224,0.08));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    /* Varied heights for masonry feel */
+    .galeri-item:nth-child(1) .galeri-placeholder  { min-height: 260px; }
+    .galeri-item:nth-child(2) .galeri-placeholder  { min-height: 200px; }
+    .galeri-item:nth-child(3) .galeri-placeholder  { min-height: 300px; }
+    .galeri-item:nth-child(4) .galeri-placeholder  { min-height: 220px; }
+    .galeri-item:nth-child(5) .galeri-placeholder  { min-height: 280px; }
+    .galeri-item:nth-child(6) .galeri-placeholder  { min-height: 200px; }
+    .galeri-item:nth-child(7) .galeri-placeholder  { min-height: 240px; }
+    .galeri-item:nth-child(8) .galeri-placeholder  { min-height: 200px; }
+    .galeri-item:nth-child(9) .galeri-placeholder  { min-height: 260px; }
+
+    .galeri-ph-icon { font-size: 2.8rem; opacity: 0.35; }
+    .galeri-ph-text { font-size: 0.75rem; color: rgba(255,255,255,0.2); text-align: center; padding: 0 20px; line-height: 1.4; }
+    .galeri-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(6,27,51,0.9) 0%, transparent 55%);
+      opacity: 0; transition: opacity 0.3s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .galeri-info { width: 100%; }
+    .galeri-caption { font-size: 0.88rem; font-weight: 600; color: var(--white); display: block; margin-bottom: 6px; }
+    .galeri-cat-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      background: rgba(0,200,224,0.15); border: 1px solid rgba(0,200,224,0.3);
+      color: var(--aqua); padding: 3px 10px; border-radius: 100px;
+    }
+
+    /* UPLOAD GUIDE */
+    .upload-guide {
+      background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 28px 32px;
+      display: flex; align-items: center; gap: 20px;
+      margin-bottom: 48px;
+    }
+    .upload-icon { font-size: 2rem; }
+    .upload-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+    .upload-text p { font-size: 0.82rem; color: rgba(255,255,255,0.4); }
+    .upload-text a { color: var(--aqua); text-decoration: none; }
+
+    /* IG CTA */
+    .ig-cta {
+      text-align: center; background: var(--deep);
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 22px; padding: 40px;
+    }
+    .ig-cta h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; margin-bottom: 8px; }
+    .ig-cta p { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 24px; }
+    .ig-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: white; padding: 14px 28px; border-radius: 14px;
+      font-weight: 700; font-size: 0.95rem; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .ig-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(220,39,67,0.35); }
+
+    /* FOOTER */
+    footer {
+      background: #040f1e; padding: 32px 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: rgba(255,255,255,0.4); }
+    .footer-logo span { color: var(--aqua); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--aqua); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 18px 28px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page-content { padding: 56px 28px 60px; }
+      .page-hero-content { padding: 0 28px 50px; }
+      .galeri-grid { columns: 2; }
+    }
+    @media (max-width: 640px) {
+      .page-content { padding: 40px 20px 48px; }
+      .page-hero-content { padding: 0 20px 40px; }
+      .galeri-grid { columns: 1; }
+      .filter-bar { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; text-align: center; padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="wave-icon"><img src="foto_profil.jpeg" alt="Pyramid Oasis"></div>
+    PYRAMID<span>OASIS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="index.html#program">Program</a></li>
+    <li><a href="index.html#jadwal">Jadwal</a></li>
+    <li><a href="prestasi.html">Prestasi</a></li>
+    <li><a href="galeri.html" class="active">Galeri</a></li>
+    <li><a href="index.html#testimoni">Testimoni</a></li>
+    <li><a href="index.html#daftar" class="nav-cta">Daftar Sekarang</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="closeMobile()">Beranda</a>
+  <a href="index.html#program" onclick="closeMobile()">Program</a>
+  <a href="index.html#jadwal" onclick="closeMobile()">Jadwal</a>
+  <a href="prestasi.html" onclick="closeMobile()">Prestasi</a>
+  <a href="galeri.html" onclick="closeMobile()">Galeri</a>
+  <a href="index.html#testimoni" onclick="closeMobile()">Testimoni</a>
+  <a href="index.html#kontak" onclick="closeMobile()">Kontak</a>
+  <a href="index.html#daftar" onclick="closeMobile()" style="color:var(--aqua);font-weight:700;margin-top:8px;">✦ Daftar Sekarang</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Beranda</a> › <span>Galeri</span>
+    </div>
+    <h1>GALERI<br><em>FOTO</em></h1>
+    <p class="page-hero-sub">Momen-momen terbaik di kolam Pyramid Oasis — dari latihan harian hingga podium kejuaraan.</p>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="page-content">
+
+  <div class="upload-guide reveal">
+    <div class="upload-icon">📸</div>
+    <div class="upload-text">
+      <h4>Foto placeholder — siap diganti!</h4>
+      <p>Ganti placeholder di bawah dengan foto asli. Ikuti kami di <a href="https://www.instagram.com/pyramid_oasis" target="_blank">@pyramid_oasis</a> untuk momen terbaru.</p>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar reveal">
+    <div class="filter-title">Semua Foto</div>
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="filterGaleri(this, 'semua')">🖼 Semua</button>
+      <button class="filter-btn" onclick="filterGaleri(this, 'latihan')">🏊 Latihan</button>
+      <button class="filter-btn" onclick="filterGaleri(this, 'kompetisi')">🥇 Kompetisi</button>
+      <button class="filter-btn" onclick="filterGaleri(this, 'kegiatan')">🎉 Kegiatan</button>
+    </div>
+  </div>
+
+  <!-- MASONRY GRID -->
+  <div class="galeri-grid" id="galeriGrid">
+    <div class="galeri-item reveal" data-cat="latihan">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🏊</span><span class="galeri-ph-text">Sesi Latihan Pagi<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Latihan pagi — Gaya Bebas</span><span class="galeri-cat-tag">Latihan</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="kompetisi">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🥇</span><span class="galeri-ph-text">Podium Juara 2025<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Podium Kejuaraan 2025</span><span class="galeri-cat-tag">Kompetisi</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="latihan">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">💪</span><span class="galeri-ph-text">Latihan Teknik Gaya Punggung<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Teknik Gaya Punggung</span><span class="galeri-cat-tag">Latihan</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="kegiatan">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🎉</span><span class="galeri-ph-text">Fun Swim Bersama Orang Tua<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Fun swim bersama orang tua</span><span class="galeri-cat-tag">Kegiatan</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="kompetisi">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🏆</span><span class="galeri-ph-text">Start Lomba 50m<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Start lomba 50m Gaya Bebas</span><span class="galeri-cat-tag">Kompetisi</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="kegiatan">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">📸</span><span class="galeri-ph-text">Foto Bersama Pelatih<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Foto bersama tim pelatih</span><span class="galeri-cat-tag">Kegiatan</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="latihan">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🌅</span><span class="galeri-ph-text">Latihan Sore — Kelas Atlet<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Sesi sore kelas Atlet</span><span class="galeri-cat-tag">Latihan</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="kompetisi">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🎽</span><span class="galeri-ph-text">Persiapan Kompetisi<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Persiapan sebelum lomba</span><span class="galeri-cat-tag">Kompetisi</span></div></div>
+    </div>
+    <div class="galeri-item reveal" data-cat="kegiatan">
+      <div class="galeri-placeholder"><span class="galeri-ph-icon">🙌</span><span class="galeri-ph-text">Selebrasi Bersama<br>Ganti dengan foto asli</span></div>
+      <div class="galeri-overlay"><div class="galeri-info"><span class="galeri-caption">Selebrasi setelah juara</span><span class="galeri-cat-tag">Kegiatan</span></div></div>
+    </div>
+  </div>
+
+  <!-- IG CTA -->
+  <div class="ig-cta reveal">
+    <h3>Lihat lebih banyak foto</h3>
+    <p>Ikuti Instagram kami untuk update foto dan video latihan setiap harinya.</p>
+    <a href="https://www.instagram.com/pyramid_oasis?igsh=MXI5bW1wY2o4dHJkbA==" target="_blank" class="ig-btn">
+      📷 Follow @pyramid_oasis
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">PYRAMID<span>OASIS</span></div>
+  <div class="footer-links">
+    <a href="index.html">Beranda</a>
+    <a href="prestasi.html">Prestasi</a>
+    <a href="brosur.html">Brosur</a>
+    <a href="index.html#kontak">Kontak</a>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+
+  function filterGaleri(btn, cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.galeri-item').forEach(item => {
+      if (cat === 'semua' || item.dataset.cat === cat) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+    // Update title
+    const titles = { semua: 'Semua Foto', latihan: 'Foto Latihan', kompetisi: 'Foto Kompetisi', kegiatan: 'Foto Kegiatan' };
+    document.querySelector('.filter-title').textContent = titles[cat] || 'Semua Foto';
+  }
+</script>
+</body>
+</html>

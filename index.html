@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyramid Oasis — Swimming Club Profesional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #061b33;
+      --deep: #0a2545;
+      --ocean: #0d5fa3;
+      --wave: #1a9aef;
+      --aqua: #00c8e0;
+      --foam: #e0f7ff;
+      --sand: #f5f0e8;
+      --gold: #f0b429;
+      --white: #ffffff;
+      --text: #1a2a3a;
+      --muted: #5a7a90;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(6, 27, 51, 0.96);
+      backdrop-filter: blur(20px);
+      padding: 14px 48px;
+      border-bottom: 1px solid rgba(26, 154, 239, 0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo span {
+      color: var(--aqua);
+    }
+
+    .nav-logo .wave-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--aqua);
+      box-shadow: 0 0 10px rgba(0,200,224,0.4);
+      flex-shrink: 0;
+    }
+    .nav-logo .wave-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: blur(0.3px) brightness(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--aqua); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy) !important;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-weight: 700 !important;
+      font-size: 0.85rem !important;
+      letter-spacing: 0.5px;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 200, 224, 0.4);
+      color: var(--navy) !important;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: var(--navy);
+      padding: 80px 32px 40px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 0;
+      border-bottom: 2px solid rgba(26, 154, 239, 0.2);
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: 500;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--aqua);
+      padding-left: 8px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: var(--navy);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: -20px;
+      background: url('foto_profil.jpeg') center/cover no-repeat;
+      opacity: 0.45;
+      transform: scale(1.05);
+      animation: slowZoom 20s ease infinite alternate;
+      filter: blur(3px);
+    }
+
+    @keyframes slowZoom {
+      from { transform: scale(1.05); }
+      to { transform: scale(1.15); }
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(6,27,51,0.2) 0%,
+        rgba(6,27,51,0.1) 30%,
+        rgba(6,27,51,0.7) 70%,
+        rgba(6,27,51,1) 100%
+      );
+    }
+
+    /* Animated water ripples */
+    .water-ripples {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .ripple {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      border: 2px solid rgba(0, 200, 224, 0.15);
+      animation: rippleOut 4s ease-out infinite;
+    }
+
+    .ripple:nth-child(1) { width: 300px; height: 150px; animation-delay: 0s; }
+    .ripple:nth-child(2) { width: 600px; height: 300px; animation-delay: 1.3s; }
+    .ripple:nth-child(3) { width: 900px; height: 450px; animation-delay: 2.6s; }
+
+    @keyframes rippleOut {
+      from { opacity: 0.5; transform: translateX(-50%) scaleX(0.3); }
+      to { opacity: 0; transform: translateX(-50%) scaleX(1); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 48px 80px;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 200, 224, 0.12);
+      border: 1px solid rgba(0, 200, 224, 0.3);
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--aqua);
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--aqua);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 9vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease 0.15s both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--aqua);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-weight: 300;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s ease 0.45s both;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy);
+      padding: 16px 36px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0, 200, 224, 0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 15px 36px;
+      border-radius: 100px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+
+    .hero-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+      line-height: 1;
+      color: var(--aqua);
+    }
+
+    .hero-stat-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 48px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--aqua);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .section-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 540px;
+      font-weight: 300;
+    }
+
+    /* ── FEATURES ── */
+    .features-section {
+      background: var(--deep);
+    }
+
+    .features-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .features-left .section-desc {
+      margin-bottom: 40px;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(26, 154, 239, 0.08);
+      border-color: rgba(26, 154, 239, 0.25);
+      transform: translateX(6px);
+    }
+
+    .feature-icon {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, rgba(26,154,239,0.15), rgba(0,200,224,0.1));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(0,200,224,0.15);
+    }
+
+    .feature-text h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    .features-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 28px 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      background: rgba(0,200,224,0.07);
+      border-color: rgba(0,200,224,0.2);
+      transform: translateY(-4px);
+    }
+
+    .stat-box:first-child {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(26,154,239,0.1), rgba(0,200,224,0.05));
+      border-color: rgba(0,200,224,0.2);
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 2px;
+      color: var(--aqua);
+      line-height: 1;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── PROGRAMS ── */
+    .programs-section {
+      background: var(--navy);
+    }
+
+    .programs-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .programs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+    }
+
+    .program-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .program-card {
+      background: var(--deep);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wave), var(--aqua));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .program-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0,200,224,0.2);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    }
+
+    .program-card:hover::before { opacity: 1; }
+
+    .program-card.featured {
+      background: linear-gradient(145deg, rgba(13,95,163,0.4), rgba(26,154,239,0.15));
+      border-color: rgba(0,200,224,0.25);
+    }
+
+    .program-card.featured::before { opacity: 1; }
+
+    .program-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy);
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .program-emoji {
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .program-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .program-card p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .program-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--aqua);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .program-price-note {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+    }
+
+    .program-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .program-features li {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.65);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .program-features li::before {
+      content: '✦';
+      color: var(--aqua);
+      font-size: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .program-btn {
+      display: block;
+      text-align: center;
+      padding: 13px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8);
+      transition: all 0.2s;
+    }
+
+    .program-btn:hover, .program-card.featured .program-btn {
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy);
+      border-color: transparent;
+    }
+
+    /* ── SCHEDULE ── */
+    .schedule-section {
+      background: var(--deep);
+    }
+
+    .schedule-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .schedule-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .schedule-block {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .schedule-block:hover {
+      background: rgba(26,154,239,0.08);
+      border-color: rgba(26,154,239,0.25);
+      transform: translateY(-4px);
+    }
+
+    .schedule-time {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--aqua);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .schedule-session {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .schedule-programs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .schedule-tag {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(0,200,224,0.1);
+      border: 1px solid rgba(0,200,224,0.2);
+      color: var(--aqua);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testi-section {
+      background: var(--navy);
+    }
+
+    .testi-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .testi-header {
+      margin-bottom: 56px;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .testi-card {
+      background: var(--deep);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .testi-card:hover {
+      border-color: rgba(0,200,224,0.2);
+      transform: translateY(-4px);
+    }
+
+    .testi-card.large {
+      grid-row: span 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .testi-stars {
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .testi-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    .testi-card.large .testi-text {
+      font-size: 1.4rem;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testi-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .testi-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--white);
+    }
+
+    .testi-role {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ── FAQ ── */
+    .faq-section {
+      background: var(--deep);
+    }
+
+    .faq-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .faq-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      overflow: hidden;
+    }
+
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      gap: 16px;
+      transition: color 0.2s;
+    }
+
+    .faq-q:hover { color: var(--aqua); }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+      transition: all 0.3s;
+      color: var(--aqua);
+    }
+
+    .faq-item.open .faq-icon {
+      background: var(--aqua);
+      color: var(--navy);
+      border-color: var(--aqua);
+      transform: rotate(45deg);
+    }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding-bottom: 24px;
+    }
+
+    /* ── REGISTER ── */
+    .register-section {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .register-section::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26,154,239,0.08) 0%, transparent 70%);
+    }
+
+    .register-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .register-left .section-desc {
+      margin-bottom: 32px;
+    }
+
+    .perks {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .perk {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .perk-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--aqua);
+      flex-shrink: 0;
+    }
+
+    .register-form {
+      background: var(--deep);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      padding: 44px 40px;
+    }
+
+    .form-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .form-subtitle {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      outline: none;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: rgba(0,200,224,0.4);
+      background: rgba(0,200,224,0.05);
+      box-shadow: 0 0 0 3px rgba(0,200,224,0.08);
+    }
+
+    .form-group select option {
+      background: var(--deep);
+      color: var(--white);
+    }
+
+    .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy);
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0,200,224,0.3);
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 16px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      background: var(--deep);
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(26,154,239,0.1);
+      border: 1px solid rgba(26,154,239,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .contact-detail h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+    }
+
+    .contact-detail p, .contact-detail a {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-detail a:hover { color: var(--aqua); }
+
+    .contact-right {
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-right h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .contact-right p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #25D366;
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .wa-btn:hover {
+      background: #1fbd5a;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(37,211,102,0.3);
+    }
+
+    .ig-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .ig-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(220,39,67,0.35);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #040f1e;
+      padding: 40px 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .footer-logo span { color: var(--aqua); }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--aqua); }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 18px 28px; }
+      nav.scrolled { padding: 12px 28px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 70px 28px; }
+      .hero-content { padding: 0 28px 70px; }
+      .features-inner, .register-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .features-right { grid-template-columns: repeat(4, 1fr); }
+      .features-right .stat-box:first-child { grid-column: auto; }
+      .program-cards { grid-template-columns: 1fr; }
+      .schedule-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .testi-card.large { grid-row: auto; }
+      footer { flex-direction: column; text-align: center; padding: 32px 28px; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero-content { padding: 0 20px 60px; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      section { padding: 56px 20px; }
+      .programs-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .register-form { padding: 28px 24px; }
+      .features-right { grid-template-columns: 1fr 1fr; }
+      .features-right .stat-box:first-child { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <div class="wave-icon"><img src="foto_profil.jpeg" alt="Pyramid Oasis"></div>
+    PYRAMID<span>OASIS</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#beranda">Beranda</a></li>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#jadwal">Jadwal</a></li>
+    <li><a href="prestasi.html">Prestasi</a></li>
+    <li><a href="galeri.html">Galeri</a></li>
+    <li><a href="#testimoni">Testimoni</a></li>
+    <li><a href="#daftar" class="nav-cta">Daftar Sekarang</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#beranda" onclick="closeMobile()">Beranda</a>
+  <a href="#program" onclick="closeMobile()">Program</a>
+  <a href="#jadwal" onclick="closeMobile()">Jadwal</a>
+  <a href="prestasi.html" onclick="closeMobile()">Prestasi</a>
+  <a href="galeri.html" onclick="closeMobile()">Galeri</a>
+  <a href="#testimoni" onclick="closeMobile()">Testimoni</a>
+  <a href="#kontak" onclick="closeMobile()">Kontak</a>
+  <a href="#daftar" onclick="closeMobile()" style="color: var(--aqua); font-weight:700; margin-top:8px;">✦ Daftar Sekarang</a>
+</div>
+
+<!-- HERO -->
+<section id="beranda" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="water-ripples">
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">Pendaftaran 2026 Dibuka</div>
+    <h1>BERENANG<br>LEBIH <em>PERCAYA</em><br>DIRI</h1>
+    <p class="hero-desc">Program renang profesional untuk semua usia — dari pemula hingga atlet kompetitif. Pelatih berlisensi, jadwal fleksibel, suasana kolam yang aman dan nyaman.</p>
+    <div class="hero-actions">
+      <a href="#daftar" class="btn-primary">Daftar Sekarang →</a>
+      <a href="brosur.html" class="btn-outline">📄 Lihat Brosur</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">200+</div>
+        <div class="hero-stat-label">Peserta Aktif</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Level Program</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">5★</div>
+        <div class="hero-stat-label">Rating Orang Tua</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="features-inner">
+    <div class="features-left">
+      <span class="section-label reveal">Kenapa Kami?</span>
+      <h2 class="section-title reveal">Lingkungan terbaik<br>untuk berkembang</h2>
+      <p class="section-desc reveal">Di Pyramid Oasis, kami percaya bahwa setiap orang bisa jadi perenang hebat — dengan bimbingan yang tepat dan suasana yang mendukung.</p>
+      <div class="feature-list">
+        <div class="feature-item reveal">
+          <div class="feature-icon">🏅</div>
+          <div class="feature-text">
+            <h4>Pelatih Berlisensi Resmi</h4>
+            <p>Instruktur berpengalaman dengan sertifikasi nasional yang prioritaskan teknik & keselamatan.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-icon">📅</div>
+          <div class="feature-text">
+            <h4>Jadwal Super Fleksibel</h4>
+            <p>Sesi pagi, siang, dan sore — disesuaikan dengan rutinitas sekolah dan kerja Anda.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-icon">👨‍👩‍👧</div>
+          <div class="feature-text">
+            <h4>Untuk Semua Usia</h4>
+            <p>Kelas dirancang khusus dari anak-anak hingga dewasa dengan pendekatan bertahap.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-icon">🛡️</div>
+          <div class="feature-text">
+            <h4>Kolam Aman & Bersih</h4>
+            <p>Fasilitas kolam yang terawat dengan standar kebersihan dan keselamatan tinggi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="features-right reveal">
+      <div class="stat-box">
+        <span class="stat-num" data-target="200">0</span>
+        <div class="stat-label">Peserta Telah Bergabung</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" data-target="5">0</span>
+        <div class="stat-label">Tahun Berpengalaman</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" data-target="3">0</span>
+        <div class="stat-label">Program Tersedia</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">98%</span>
+        <div class="stat-label">Orang Tua Puas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="program" class="programs-section">
+  <div class="programs-inner">
+    <div class="programs-header">
+      <div>
+        <span class="section-label reveal">Program</span>
+        <h2 class="section-title reveal">Pilih level<br>yang sesuai</h2>
+      </div>
+      <p class="section-desc reveal" style="max-width:280px; font-size:0.9rem;">Biaya pendaftaran Rp100.000 untuk semua program.</p>
+    </div>
+    <div class="program-cards">
+      <article class="program-card reveal">
+        <span class="program-emoji">🌊</span>
+        <h3>Pemula</h3>
+        <p>Fundamental renang, teknik napas, dan adaptasi air untuk membangun kepercayaan diri pertama kali di kolam.</p>
+        <div class="program-price">Rp300K</div>
+        <div class="program-price-note">per bulan</div>
+        <ul class="program-features">
+          <li>2–3 sesi per minggu</li>
+          <li>Semua usia (anak & dewasa)</li>
+          <li>Fokus teknik dasar & keselamatan</li>
+          <li>Kelompok kecil maks 8 orang</li>
+        </ul>
+        <a href="#daftar" class="program-btn">Pilih Program Ini</a>
+      </article>
+
+
+      <article class="program-card reveal">
+        <span class="program-emoji">🥇</span>
+        <h3>Atlet</h3>
+        <p>Program intensif untuk persiapan kompetisi dengan fokus pada kecepatan, strategi balapan, dan mental juara.</p>
+        <div class="program-price">Rp350K</div>
+        <div class="program-price-note">per bulan</div>
+        <ul class="program-features">
+          <li>5 sesi per minggu</li>
+          <li>Remaja & dewasa</li>
+          <li>Persiapan kompetisi</li>
+          <li>Video analisis teknik</li>
+        </ul>
+        <a href="#daftar" class="program-btn">Pilih Program Ini</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="jadwal" class="schedule-section">
+  <div class="schedule-inner">
+    <div class="schedule-header">
+      <span class="section-label reveal">Jadwal Latihan</span>
+      <h2 class="section-title reveal" style="text-align:center;">Fleksibel sesuai<br>waktu kamu</h2>
+      <p class="section-desc reveal" style="margin: 0 auto; text-align:center;">Tersedia tiga sesi setiap harinya. Pilih sesuai rutinitas kamu.</p>
+    </div>
+    <div class="schedule-grid">
+      <div class="schedule-block reveal">
+        <div class="schedule-time">06:00</div>
+        <div class="schedule-session">Sesi Pagi</div>
+        <div class="schedule-programs">
+          <span class="schedule-tag">Pemula</span>
+          <span class="schedule-tag">Atlet</span>
+        </div>
+      </div>
+      <div class="schedule-block reveal">
+        <div class="schedule-time">10:00</div>
+        <div class="schedule-session">Sesi Siang</div>
+        <div class="schedule-programs">
+          <span class="schedule-tag">Pemula</span>
+        </div>
+      </div>
+      <div class="schedule-block reveal">
+        <div class="schedule-time">15:00</div>
+        <div class="schedule-session">Sesi Sore</div>
+        <div class="schedule-programs">
+          <span class="schedule-tag">Semua Level</span>
+        </div>
+      </div>
+    </div>
+    <p class="reveal" style="text-align:center; color:rgba(255,255,255,0.35); font-size:0.82rem; margin-top:28px;">Senin–Sabtu • Minggu & Hari Libur Nasional tutup</p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimoni" class="testi-section">
+  <div class="testi-inner">
+    <div class="testi-header">
+      <span class="section-label reveal">Testimoni</span>
+      <h2 class="section-title reveal">Kata mereka<br>yang sudah bergabung</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card large reveal">
+        <div>
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Anak saya yang awalnya takut air, sekarang sudah bisa renang gaya bebas dalam 2 bulan. Pelatihnya sabar sekali dan anak-anak senang banget latihan di sini. Recommended banget!"</p>
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar">SR</div>
+          <div>
+            <div class="testi-name">Sri Rahayu</div>
+            <div class="testi-role">Orang tua peserta kelas Pemula</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Pelatihnya profesional dan perhatian. Teknik renang saya berkembang pesat sejak bergabung di sini."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">BW</div>
+          <div>
+            <div class="testi-name">Budi Wibowo</div>
+            <div class="testi-role">Peserta kelas Pemula</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Fasilitas bersih, kolam nyaman, dan jadwal sangat fleksibel. Cocok buat yang sibuk sekolah."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">DN</div>
+          <div>
+            <div class="testi-name">Dina Nuraini</div>
+            <div class="testi-role">Peserta kelas Atlet</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Program atlet membantu saya siap kompetisi. Pelatih tahu persis cara memaksimalkan waktu latihan."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RA</div>
+          <div>
+            <div class="testi-name">Rizky Aditya</div>
+            <div class="testi-role">Peserta kelas Atlet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <span class="section-label reveal">FAQ</span>
+      <h2 class="section-title reveal" style="text-align:center;">Pertanyaan<br>yang sering ditanya</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Berapa biaya pendaftaran?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Biaya pendaftaran sebesar <strong>Rp100.000</strong> (sekali bayar). Biaya bulanan tergantung program: Pemula Rp300.000, dan Atlet Rp350.000 per bulan.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Berapa usia minimum untuk mendaftar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Program tersedia untuk semua usia mulai dari anak-anak (3 tahun ke atas) hingga dewasa. Kami memiliki kelas yang disesuaikan untuk setiap kelompok usia.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Apakah perlu bisa renang dulu untuk daftar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Tidak perlu! Program Pemula dirancang khusus untuk yang belum bisa renang sama sekali. Pelatih kami akan membimbing dari nol hingga bisa dengan aman.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Apa saja yang perlu dibawa saat latihan?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Cukup bawa pakaian renang, kacamata renang, handuk, dan sandal. Untuk peserta baru, pelampung awal akan disediakan oleh kami.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Bagaimana cara mendaftar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Isi form pendaftaran di bawah ini, lalu klik "Kirim ke WhatsApp". Tim kami akan menghubungi kamu dalam 1×24 jam untuk konfirmasi jadwal dan pembayaran.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="daftar" class="register-section">
+  <div class="register-inner">
+    <div class="register-left">
+      <span class="section-label reveal">Daftar Sekarang</span>
+      <h2 class="section-title reveal">Mulai perjalanan<br>renang kamu hari ini</h2>
+      <p class="section-desc reveal">Jangan tunda lagi! Isi form di samping dan kami akan segera menghubungimu via WhatsApp.</p>
+      <div class="perks reveal" style="margin-top:32px;">
+        <div class="perk"><div class="perk-dot"></div> Konfirmasi dalam 1×24 jam</div>
+        <div class="perk"><div class="perk-dot"></div> Sesi percobaan gratis untuk anggota baru</div>
+        <div class="perk"><div class="perk-dot"></div> Pilih jadwal sesuai kenyamanan kamu</div>
+        <div class="perk"><div class="perk-dot"></div> Didampingi pelatih berlisensi dari hari pertama</div>
+      </div>
+    </div>
+    <div class="register-form reveal">
+      <div class="form-title">Form Pendaftaran</div>
+      <div class="form-subtitle">Isi data di bawah lalu kirim via WhatsApp</div>
+      <form id="formDaftar" onsubmit="kirimWA(event)" autocomplete="off">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" name="nama" placeholder="Masukkan nama lengkap" autocomplete="off" spellcheck="false" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Umur</label>
+            <input type="number" name="umur" placeholder="Umur" min="3" max="80" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label>Program</label>
+            <select name="program" required>
+              <option value="">Pilih program</option>
+              <option value="Pemula">🌊 Pemula — Rp300K/bln</option>
+              <option value="Atlet">🥇 Atlet — Rp350K/bln</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nomor WhatsApp</label>
+          <input type="tel" name="whatsapp" placeholder="Contoh: 0812-3456-7890" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label>Sesi Pilihan</label>
+          <select name="sesi">
+            <option value="">Pilih sesi (opsional)</option>
+            <option>Pagi (06:00)</option>
+            <option>Siang (10:00)</option>
+            <option>Sore (15:00)</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">
+          💬 Kirim ke WhatsApp
+        </button>
+        <div class="form-note">Kami akan membalas dalam 1×24 jam</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="kontak" class="contact-section">
+  <div class="contact-inner">
+    <div>
+      <span class="section-label reveal">Kontak</span>
+      <h2 class="section-title reveal">Ada pertanyaan?<br>Kami siap membantu</h2>
+      <div class="contact-info">
+        <div class="contact-item reveal">
+          <div class="contact-icon">📍</div>
+          <div class="contact-detail">
+            <h4>Alamat</h4>
+            <p>Jl. Al-Hawi Kav. Henkel, RT.01 RW.08,<br>Pondok Rajeg, Cibinong, Bogor 16914</p>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-icon">📱</div>
+          <div class="contact-detail">
+            <h4>WhatsApp</h4>
+            <a href="https://wa.me/6285285550650" target="_blank">+62 852-8555-0650</a>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-icon">⏰</div>
+          <div class="contact-detail">
+            <h4>Jam Operasional</h4>
+            <p>Senin – Sabtu, 06:00 – 18:00 WIB</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right reveal">
+      <div>
+        <h3>Hubungi Langsung</h3>
+        <p>Chat atau ikuti kami di media sosial untuk info jadwal, promo, dan kegiatan terbaru.</p>
+      </div>
+      <a href="https://wa.me/6285285550650?text=Halo%20Pyramid%20Oasis%2C%20saya%20ingin%20tahu%20lebih%20lanjut%20tentang%20program%20renang" target="_blank" class="wa-btn">
+        💬 Chat WhatsApp Sekarang
+      </a>
+      <a href="https://www.instagram.com/pyramid_oasis?igsh=MXI5bW1wY2o4dHJkbA==" target="_blank" class="ig-btn">
+        📷 Follow Instagram @pyramid_oasis
+      </a>
+      <a href="brosur.html" class="btn-outline" style="justify-content:center;">
+        📄 Download Brosur Lengkap
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PYRAMID<span>OASIS</span></div>
+  <div class="footer-copy">© 2026 Pyramid Oasis Swimming Club · Semua hak dilindungi</div>
+  <div class="footer-links">
+    <a href="#beranda">Beranda</a>
+    <a href="#program">Program</a>
+    <a href="brosur.html">Brosur</a>
+    <a href="#kontak">Kontak</a>
+  </div>
+</footer>
+
+<script>
+  // NAVBAR SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  // SMOOTH SCROLL
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // COUNTER ANIMATION
+  function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    if (!target) return;
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        el.textContent = target + (target >= 100 ? '+' : '');
+        clearInterval(timer);
+      } else {
+        el.textContent = Math.floor(current);
+      }
+    }, 20);
+  }
+
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
+        counterObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.features-right').forEach(el => counterObs.observe(el));
+
+  // FAQ
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // PROGRAM CARD → PREFILL FORM
+  document.querySelectorAll('.program-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const card = btn.closest('.program-card');
+      const prog = card.querySelector('h3').textContent;
+      const sel = document.querySelector('[name="program"]');
+      if (sel) sel.value = prog;
+    });
+  });
+
+  // FORM → WHATSAPP
+  function kirimWA(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const nama = fd.get('nama');
+    const umur = fd.get('umur');
+    const program = fd.get('program');
+    const wa = fd.get('whatsapp');
+    const sesi = fd.get('sesi') || 'Belum dipilih';
+    const msg = `Halo Pyramid Oasis! 🏊‍♂️\n\nSaya ingin mendaftar:\n👤 Nama: ${nama}\n🎂 Umur: ${umur} tahun\n📚 Program: ${program}\n⏰ Sesi: ${sesi}\n📱 WA: ${wa}\n\nMohon info selanjutnya. Terima kasih!`;
+    window.open('https://wa.me/6285285550650?text=' + encodeURIComponent(msg), '_blank');
+  }
+</script>
+</body>
+</html>

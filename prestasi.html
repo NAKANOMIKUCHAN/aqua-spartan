@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prestasi — Pyramid Oasis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #061b33;
+      --deep: #0a2545;
+      --ocean: #0d5fa3;
+      --wave: #1a9aef;
+      --aqua: #00c8e0;
+      --gold: #f0b429;
+      --white: #ffffff;
+      --text: #1a2a3a;
+      --muted: #5a7a90;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px; transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(6,27,51,0.96); backdrop-filter: blur(20px);
+      padding: 14px 48px; border-bottom: 1px solid rgba(26,154,239,0.15);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+      letter-spacing: 2px; color: var(--white);
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .nav-logo span { color: var(--aqua); }
+    .nav-logo .wave-icon {
+      width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+      border: 2px solid var(--aqua); box-shadow: 0 0 10px rgba(0,200,224,0.4); flex-shrink: 0;
+    }
+    .nav-logo .wave-icon img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--aqua); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--wave), var(--aqua));
+      color: var(--navy) !important; padding: 10px 22px; border-radius: 100px;
+      font-weight: 700 !important; font-size: 0.85rem !important;
+    }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0;
+      background: var(--navy); padding: 80px 32px 40px; z-index: 99;
+      flex-direction: column; border-bottom: 2px solid rgba(26,154,239,0.2);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--white); text-decoration: none; font-size: 1.3rem; font-weight: 500; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s, padding-left 0.2s; }
+    .mobile-menu a:hover { color: var(--aqua); padding-left: 8px; }
+
+    /* HERO */
+    .page-hero {
+      min-height: 44vh; display: flex; align-items: flex-end; padding-top: 80px;
+      position: relative; overflow: hidden; background: var(--navy);
+    }
+    .page-hero-bg {
+      position: absolute; inset: -20px;
+      background: url('foto_profil.jpeg') center/cover no-repeat;
+      opacity: 0.2; filter: blur(3px);
+    }
+    .page-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(6,27,51,0.3) 0%, rgba(6,27,51,0.95) 100%);
+    }
+    .page-hero-content {
+      position: relative; z-index: 2; padding: 0 48px 60px; width: 100%;
+    }
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+    .breadcrumb a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--aqua); }
+    .breadcrumb span { color: var(--gold); }
+    .page-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      letter-spacing: 4px; line-height: 0.9;
+    }
+    .page-hero h1 em { font-style: normal; color: var(--gold); }
+    .page-hero-sub {
+      font-size: 1rem; color: rgba(255,255,255,0.55); font-weight: 300;
+      margin-top: 12px; max-width: 500px;
+    }
+
+    /* CONTENT */
+    .page-content { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-bottom: 72px;
+    }
+    .stat-item {
+      background: var(--deep); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px; padding: 24px 20px; text-align: center;
+      transition: all 0.3s;
+    }
+    .stat-item:hover { border-color: rgba(240,180,41,0.25); transform: translateY(-4px); }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem;
+      color: var(--gold); letter-spacing: 2px; line-height: 1; display: block;
+    }
+    .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 6px; letter-spacing: 0.5px; }
+
+    /* SECTION TITLE */
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: block; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--white); margin-bottom: 40px; line-height: 1.1; }
+
+    /* MEDAL CARDS */
+    .medals-section { margin-bottom: 80px; }
+    .medals-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .medal-card {
+      background: var(--deep); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 22px; padding: 32px 24px; text-align: center;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .medal-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), #ffdd57); opacity: 0; transition: opacity 0.3s;
+    }
+    .medal-card:hover { transform: translateY(-8px); border-color: rgba(240,180,41,0.3); box-shadow: 0 24px 60px rgba(0,0,0,0.3); }
+    .medal-card:hover::before { opacity: 1; }
+    .medal-card.gold { border-color: rgba(240,180,41,0.2); background: linear-gradient(145deg, rgba(240,180,41,0.06), var(--deep)); }
+    .medal-card.gold::before { opacity: 1; }
+    .medal-emoji { font-size: 3rem; margin-bottom: 14px; display: block; }
+    .medal-rank { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; color: var(--gold); line-height: 1; margin-bottom: 10px; }
+    .medal-event { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 8px; line-height: 1.4; }
+    .medal-detail { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.5; margin-bottom: 14px; }
+    .medal-tags { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+    .medal-tag {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 100px;
+    }
+    .medal-tag.year { background: rgba(240,180,41,0.1); border: 1px solid rgba(240,180,41,0.25); color: var(--gold); }
+    .medal-tag.level { background: rgba(26,154,239,0.1); border: 1px solid rgba(26,154,239,0.2); color: var(--aqua); }
+
+    /* TIMELINE */
+    .timeline-section { margin-bottom: 80px; }
+    .timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 72px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--gold), rgba(240,180,41,0.1));
+    }
+    .tl-item {
+      display: flex; gap: 28px; align-items: flex-start;
+      padding: 0 0 36px; position: relative;
+    }
+    .tl-year {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--gold);
+      letter-spacing: 2px; min-width: 56px; padding-top: 18px; text-align: right;
+    }
+    .tl-dot-wrap {
+      display: flex; flex-direction: column; align-items: center; padding-top: 22px;
+      position: relative; z-index: 1;
+    }
+    .tl-dot {
+      width: 14px; height: 14px; border-radius: 50%; background: var(--gold);
+      box-shadow: 0 0 12px rgba(240,180,41,0.6); flex-shrink: 0;
+    }
+    .tl-card {
+      flex: 1; background: var(--deep); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px; padding: 24px 28px; transition: all 0.3s;
+    }
+    .tl-card:hover { border-color: rgba(240,180,41,0.2); background: rgba(240,180,41,0.02); }
+    .tl-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .tl-card p { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 14px; }
+    .tl-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tl-badge {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 100px;
+      background: rgba(240,180,41,0.08); border: 1px solid rgba(240,180,41,0.2); color: var(--gold);
+    }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(13,95,163,0.3), rgba(0,200,224,0.1));
+      border: 1px solid rgba(0,200,224,0.2); border-radius: 24px;
+      padding: 48px; text-align: center;
+    }
+    .cta-box h2 { font-family: 'DM Serif Display', serif; font-size: 2rem; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.55); margin-bottom: 28px; font-size: 1rem; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--wave), var(--aqua)); color: var(--navy);
+      padding: 16px 36px; border-radius: 100px; font-weight: 700; font-size: 0.95rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,200,224,0.35); }
+
+    /* FOOTER */
+    footer {
+      background: #040f1e; padding: 32px 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: rgba(255,255,255,0.4); }
+    .footer-logo span { color: var(--aqua); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--aqua); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 18px 28px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page-content { padding: 56px 28px; }
+      .page-hero-content { padding: 0 28px 50px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .medals-grid { grid-template-columns: repeat(2, 1fr); }
+      .timeline::before { left: 56px; }
+    }
+    @media (max-width: 640px) {
+      .page-content { padding: 40px 20px; }
+      .page-hero-content { padding: 0 20px 40px; }
+      .medals-grid { grid-template-columns: 1fr; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .tl-year { font-size: 1rem; min-width: 44px; }
+      footer { flex-direction: column; text-align: center; padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="wave-icon"><img src="foto_profil.jpeg" alt="Pyramid Oasis"></div>
+    PYRAMID<span>OASIS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="index.html#program">Program</a></li>
+    <li><a href="index.html#jadwal">Jadwal</a></li>
+    <li><a href="prestasi.html" class="active">Prestasi</a></li>
+    <li><a href="galeri.html">Galeri</a></li>
+    <li><a href="index.html#testimoni">Testimoni</a></li>
+    <li><a href="index.html#daftar" class="nav-cta">Daftar Sekarang</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="closeMobile()">Beranda</a>
+  <a href="index.html#program" onclick="closeMobile()">Program</a>
+  <a href="index.html#jadwal" onclick="closeMobile()">Jadwal</a>
+  <a href="prestasi.html" onclick="closeMobile()">Prestasi</a>
+  <a href="galeri.html" onclick="closeMobile()">Galeri</a>
+  <a href="index.html#testimoni" onclick="closeMobile()">Testimoni</a>
+  <a href="index.html#kontak" onclick="closeMobile()">Kontak</a>
+  <a href="index.html#daftar" onclick="closeMobile()" style="color:var(--aqua);font-weight:700;margin-top:8px;">✦ Daftar Sekarang</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Beranda</a> › <span>Prestasi</span>
+    </div>
+    <h1>PRESTASI<br><em>KAMI</em></h1>
+    <p class="page-hero-sub">Setiap medali adalah hasil kerja keras atlet dan dedikasi pelatih Pyramid Oasis.</p>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="page-content">
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="7">0</span>
+      <div class="stat-label">Total Medali</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="4">0</span>
+      <div class="stat-label">Medali Emas</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="3">0</span>
+      <div class="stat-label">Kejuaraan Diikuti</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="2023">0</span>
+      <div class="stat-label">Pertama Kompetisi</div>
+    </div>
+  </div>
+
+  <!-- MEDAL CARDS -->
+  <div class="medals-section">
+    <span class="section-label reveal">Koleksi Medali</span>
+    <h2 class="section-title reveal">Hasil terbaik atlet kami</h2>
+    <div class="medals-grid">
+      <div class="medal-card gold reveal">
+        <span class="medal-emoji">🥇</span>
+        <div class="medal-rank">Juara 1</div>
+        <div class="medal-event">Gaya Bebas 50m — KU 10–12 Tahun</div>
+        <div class="medal-detail">Kejuaraan Renang Antar Klub<br>Kabupaten Bogor</div>
+        <div class="medal-tags">
+          <span class="medal-tag year">2025</span>
+          <span class="medal-tag level">Kab. Bogor</span>
+        </div>
+      </div>
+      <div class="medal-card reveal">
+        <span class="medal-emoji">🥈</span>
+        <div class="medal-rank">Juara 2</div>
+        <div class="medal-event">Gaya Punggung 100m — KU 13–15 Tahun</div>
+        <div class="medal-detail">Open Turnamen Renang<br>Se-Jawa Barat</div>
+        <div class="medal-tags">
+          <span class="medal-tag year">2025</span>
+          <span class="medal-tag level">Jawa Barat</span>
+        </div>
+      </div>
+      <div class="medal-card reveal">
+        <span class="medal-emoji">🥇</span>
+        <div class="medal-rank">Juara 1</div>
+        <div class="medal-event">Gaya Dada 50m — KU 8–10 Tahun</div>
+        <div class="medal-detail">Kompetisi Renang<br>Tingkat Kecamatan</div>
+        <div class="medal-tags">
+          <span class="medal-tag year">2024</span>
+          <span class="medal-tag level">Kecamatan</span>
+        </div>
+      </div>
+      <div class="medal-card reveal">
+        <span class="medal-emoji">🥇</span>
+        <div class="medal-rank">Juara 1</div>
+        <div class="medal-event">Gaya Bebas 100m — KU 13–15 Tahun</div>
+        <div class="medal-detail">Kejuaraan Pelajar Renang<br>Kota Bogor</div>
+        <div class="medal-tags">
+          <span class="medal-tag year">2024</span>
+          <span class="medal-tag level">Kota Bogor</span>
+        </div>
+      </div>
+      <div class="medal-card reveal">
+        <span class="medal-emoji">🥉</span>
+        <div class="medal-rank">Juara 3</div>
+        <div class="medal-event">Estafet 4×50m — Campuran</div>
+        <div class="medal-detail">Kejuaraan Renang Pelajar<br>Kota Bogor</div>
+        <div class="medal-tags">
+          <span class="medal-tag year">2024</span>
+          <span class="medal-tag level">Kota Bogor</span>
+        </div>
+      </div>
+      <div class="medal-card gold reveal">
+        <span class="medal-emoji">🥇</span>
+        <div class="medal-rank">Juara 1</div>
+        <div class="medal-event">Gaya Kupu-Kupu 50m — KU 10–12 Tahun</div>
+        <div class="medal-detail">Debut Perdana Pyramid Oasis<br>Kompetisi Tingkat Kecamatan</div>
+        <div class="medal-tags">
+          <span class="medal-tag year">2023</span>
+          <span class="medal-tag level">Kecamatan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section">
+    <span class="section-label reveal">Perjalanan</span>
+    <h2 class="section-title reveal">Dari awal hingga sekarang</h2>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-year">2025</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-card">
+          <h3>3 Medali di Kejuaraan Antar Klub & Open Se-Jawa Barat</h3>
+          <p>Tahun terbaik Pyramid Oasis — 2 emas dan 1 perak di dua ajang berbeda. Atlet kelas Atlet mulai unjuk gigi di level provinsi.</p>
+          <div class="tl-badges">
+            <span class="tl-badge">🥇 2 Emas</span>
+            <span class="tl-badge">🥈 1 Perak</span>
+            <span class="tl-badge">Level Provinsi</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2024</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-card">
+          <h3>Juara Umum — Kompetisi Renang Pelajar Kota Bogor</h3>
+          <p>5 atlet masuk final, 3 naik podium. Pyramid Oasis resmi dikenal sebagai klub renang kompetitif di lingkup kota.</p>
+          <div class="tl-badges">
+            <span class="tl-badge">🥇 1 Emas</span>
+            <span class="tl-badge">🥉 1 Perunggu</span>
+            <span class="tl-badge">Juara Umum</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2023</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-card">
+          <h3>Debut Perdana — 2 Finalis Masuk 3 Besar</h3>
+          <p>Pertama kalinya Pyramid Oasis mengirim atlet ke kompetisi resmi. Dua atlet langsung naik podium — awal yang luar biasa untuk klub yang baru berdiri.</p>
+          <div class="tl-badges">
+            <span class="tl-badge">🥇 1 Emas</span>
+            <span class="tl-badge">Debut Pertama</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box reveal">
+    <h2>Mau ikut torehkan prestasi?</h2>
+    <p>Bergabunglah dengan program Atlet kami dan berlatih bersama juara.</p>
+    <a href="index.html#daftar" class="btn-primary">Daftar Program Atlet →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">PYRAMID<span>OASIS</span></div>
+  <div class="footer-links">
+    <a href="index.html">Beranda</a>
+    <a href="galeri.html">Galeri</a>
+    <a href="brosur.html">Brosur</a>
+    <a href="index.html#kontak">Kontak</a>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 70);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+
+  function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    if (!target) return;
+    let current = 0;
+    const step = Math.max(1, target / 60);
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { el.textContent = target; clearInterval(timer); }
+      else el.textContent = Math.floor(current);
+    }, 20);
+  }
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('[data-target]').forEach(animateCounter);
+        counterObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.stats-bar').forEach(el => counterObs.observe(el));
+</script>
+</body>
+</html>
