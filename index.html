@@ -1917,9 +1917,10 @@
 
 <script>
   // SPLASH SCREEN
-  document.addEventListener('DOMContentLoaded', () => {
+  const initSplash = () => {
     const splash = document.getElementById('splashScreen');
     const splashBtn = document.getElementById('splashBtn');
+    if (!splash) return;
     
     document.body.style.overflow = 'hidden';
     
@@ -1942,7 +1943,13 @@
     if (splashBtn) {
       splashBtn.addEventListener('click', dismissSplash);
     }
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSplash);
+  } else {
+    initSplash();
+  }
 
   // NAVBAR SCROLL
   const navbar = document.getElementById('navbar');
