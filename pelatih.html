@@ -109,8 +109,8 @@
     /* ── COACH GRID ── */
     .coach-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
     }
 
     /* ── COACH CARD ── */
@@ -253,6 +253,135 @@
       box-shadow: 0 0 8px rgba(0,200,224,0.5);
     }
 
+    /* ── PHOTO-ONLY FLIP CARD ── */
+    .photo-card {
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 28px;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      min-height: 420px;
+      display: flex;
+      align-items: stretch;
+    }
+    .photo-card:hover {
+      border-color: rgba(0,200,224,0.35);
+      box-shadow: 0 20px 50px rgba(0,200,224,0.15);
+    }
+    .photo-card-img {
+      width: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s ease, filter 0.4s ease;
+    }
+    .photo-card:hover .photo-card-img {
+      transform: scale(1.02);
+    }
+    /* Hint icon di pojok bawah */
+    .photo-card-hint {
+      position: absolute;
+      bottom: 14px; right: 16px;
+      background: rgba(0,200,224,0.15);
+      border: 1px solid rgba(0,200,224,0.3);
+      border-radius: 100px;
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      color: var(--aqua);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(8px);
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .photo-card.open .photo-card-hint { opacity: 0; }
+    /* Overlay biodata (slide up) */
+    .photo-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6,27,51,0.97);
+      backdrop-filter: blur(20px);
+      transform: translateY(101%);
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .photo-card.open .photo-card-overlay {
+      transform: translateY(0);
+    }
+    /* Close button */
+    .overlay-close {
+      position: absolute;
+      top: 14px; right: 16px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .overlay-close:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+    /* Overlay header */
+    .overlay-header {
+      margin-bottom: 18px;
+      padding-right: 40px;
+    }
+    .overlay-badge {
+      display: inline-block;
+      font-size: 0.68rem; font-weight: 700;
+      color: var(--aqua);
+      background: rgba(0,200,224,0.1);
+      border: 1px solid rgba(0,200,224,0.25);
+      padding: 4px 12px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .overlay-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; color: var(--white);
+      line-height: 1.1;
+    }
+    /* Biodata rows di overlay */
+    .overlay-biodata { flex: 1; }
+    /* Staggered animation per row */
+    .photo-card.open .biodata-row {
+      opacity: 0;
+      animation: biodataIn 0.4s ease forwards;
+    }
+    .photo-card.open .biodata-row:nth-child(1)  { animation-delay: 0.08s; }
+    .photo-card.open .biodata-row:nth-child(2)  { animation-delay: 0.16s; }
+    .photo-card.open .biodata-row:nth-child(3)  { animation-delay: 0.24s; }
+    .photo-card.open .biodata-row:nth-child(4)  { animation-delay: 0.32s; }
+    .photo-card.open .biodata-row:nth-child(5)  { animation-delay: 0.40s; }
+    .photo-card.open .biodata-row:nth-child(6)  { animation-delay: 0.48s; }
+    .photo-card.open .biodata-row:nth-child(7)  { animation-delay: 0.56s; }
+    .photo-card.open .biodata-row:nth-child(8)  { animation-delay: 0.64s; }
+    .photo-card.open .biodata-row:nth-child(9)  { animation-delay: 0.72s; }
+    @keyframes biodataIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    /* Tags di overlay */
+    .overlay-tags {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .overlay-tag {
+      font-size: 0.7rem; font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 4px 10px; border-radius: 100px;
+    }
+
     /* ── PROFILE PHOTO ── */
     .profile-photo-wrapper {
       position: relative;
@@ -362,12 +491,13 @@
       .hamburger { display: flex; }
       .page-content { padding: 56px 28px 72px; }
       .page-hero-content { padding: 0 28px 50px; }
-      .coach-grid { grid-template-columns: 1fr; gap: 24px; }
+      .coach-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     }
     @media (max-width: 640px) {
       .page-content { padding: 40px 20px 56px; }
       .page-hero-content { padding: 0 20px 40px; }
       .coach-card { padding: 32px 24px; }
+      .coach-grid { grid-template-columns: 1fr; }
       .cta-box { padding: 40px 24px; }
       footer { flex-direction: column; text-align: center; padding: 24px 20px; }
     }
@@ -491,7 +621,7 @@
       </div>
     </div>
 
-    <!-- ─── PELATIH 2: KAK SAMBAS ─── -->
+    <!-- ─── PELATIH 2: KAK SAMBAS ─── (Placeholder) -->
     <div class="coach-card reveal">
       <div class="coach-avatar-wrapper">
         <div class="coach-avatar-ring"></div>
@@ -505,7 +635,7 @@
         kejuaraan dengan metode latihan terstruktur dan terukur.
       </p>
       <div class="coach-specialties">
-        <div class="specialty-item"><div class="specialty-dot"></div>Analisis teknik gaya renang (stroke analysis)</div>
+        <div class="specialty-item"><div class="specialty-dot"></div>Analisis teknik gaya renang</div>
         <div class="specialty-item"><div class="specialty-dot"></div>Pelatihan stamina &amp; kecepatan kompetitif</div>
         <div class="specialty-item"><div class="specialty-dot"></div>Persiapan mental &amp; strategi balapan</div>
         <div class="specialty-item"><div class="specialty-dot"></div>Pembinaan atlet muda usia 10–18 tahun</div>
@@ -527,6 +657,67 @@
         <div class="stat-item">
           <span class="stat-num">3x</span>
           <span class="stat-txt">Juara Regional</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PELATIH 3: AHMAD GHOITS — PHOTO CARD (klik untuk lihat biodata) ─── -->
+    <div class="photo-card reveal" id="cardGhoits" onclick="toggleCard(this)">
+      <!-- FOTO FULL (tampilan depan) -->
+      <img src="foto_ghoits.jpg" alt="Ahmad Ghoits" class="photo-card-img">
+      <div class="photo-card-hint">👆 Klik untuk biodata</div>
+
+      <!-- OVERLAY BIODATA (muncul saat diklik) -->
+      <div class="photo-card-overlay">
+        <button class="overlay-close" onclick="event.stopPropagation(); toggleCard(document.getElementById('cardGhoits'))">✕</button>
+        <div class="overlay-header">
+          <div class="overlay-badge">Pelatih Renang</div>
+          <div class="overlay-name">Ahmad Ghoits</div>
+        </div>
+        <div class="overlay-biodata">
+          <div class="biodata-table">
+            <div class="biodata-row">
+              <span class="biodata-label">👤 Nama</span>
+              <span class="biodata-value">Ahmad Ghoits</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">🎂 TTL</span>
+              <span class="biodata-value">Depok, 18 Maret 2000</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">⚧ Jenis Kelamin</span>
+              <span class="biodata-value">Laki-laki</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">📞 No. Telepon</span>
+              <span class="biodata-value">089602121211</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">✉️ Email</span>
+              <span class="biodata-value">khusus.hasbi12@gmail.com</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">🏅 Sertifikat</span>
+              <span class="biodata-value">Pelatihan pelatih di German</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">💼 Pengalaman</span>
+              <span class="biodata-value">3 Tahun di Swiss</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">🏊 Keahlian Gaya</span>
+              <span class="biodata-value">Sangat Ahli pada Gaya Kupu</span>
+            </div>
+            <div class="biodata-row">
+              <span class="biodata-label">🌐 Bahasa</span>
+              <span class="biodata-value">Jepang, German, Turki</span>
+            </div>
+          </div>
+          <div class="overlay-tags">
+            <span class="overlay-tag">🦋 Gaya Kupu-Kupu</span>
+            <span class="overlay-tag">🌍 German &amp; Jepang</span>
+            <span class="overlay-tag">🏅 Tersertifikasi</span>
+          </div>
         </div>
       </div>
     </div>
@@ -577,6 +768,11 @@
     });
   }, { threshold: 0.08 });
   reveals.forEach(el => obs.observe(el));
+
+  // Toggle photo card (Ahmad Ghoits)
+  function toggleCard(card) {
+    card.classList.toggle('open');
+  }
 </script>
 </body>
 </html>
