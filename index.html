@@ -2726,23 +2726,35 @@
     initSplash();
   }
 
-  // ACTIVE ATHLETES REAL-TIME COUNT
-  function initActiveAthletes() {
-    let count = localStorage.getItem('activeAthletes');
-    if (!count) {
-      count = 91;
-      localStorage.setItem('activeAthletes', count);
-    }
+  // =====================================================
+  // ACTIVE ATHLETES — kvdb.io (cross-device, no setup)
+  // =====================================================
+  // Hapus paksa sisa data lama dari localStorage versi sebelumnya
+  localStorage.removeItem('activeAthletes');
+  const _BASE_COUNT    = 91;
+  const _ATHLETE_URL   = 'https://kvdb.io/SpxJLmATtBmLWfQhDm81Pb/athletes_count';
+
+  function _updateAthleteUI(extra) {
+    const total = _BASE_COUNT + (parseInt(extra) || 0);
     const countEl = document.getElementById('activeAthletesCount');
-    if (countEl) {
-      countEl.textContent = count;
-    }
+    if (countEl) countEl.textContent = total;
     const participantsEl = document.getElementById('totalParticipantsCount');
-    if (participantsEl) {
-      participantsEl.setAttribute('data-target', count);
+    if (participantsEl) participantsEl.setAttribute('data-target', total);
+  }
+
+  async function _fetchAthleteCount() {
+    try {
+      const res = await fetch(_ATHLETE_URL, { cache: 'no-store' });
+      const txt = await res.text();
+      _updateAthleteUI(txt.trim());
+    } catch(e) {
+      _updateAthleteUI(0);
     }
   }
-  initActiveAthletes();
+
+  // Muat saat halaman buka + polling tiap 30 detik (live di semua device)
+  _fetchAthleteCount();
+  setInterval(_fetchAthleteCount, 30000);
 
   // NAVBAR SCROLL
   const navbar = document.getElementById('navbar');
@@ -2866,15 +2878,15 @@
     const msg = `Halo ${sapaan}! 🏊‍♂️\n\nSaya ingin mendaftar:\n👤 Nama: ${nama}\n🎂 Umur: ${umur} tahun\n📚 Program: ${program}\n⏰ Sesi: ${sesi}\n📱 WA: ${wa}\n\nMohon info selanjutnya. Terima kasih!`;
     tutupModalWA();
     
-    // Increment active athletes count
-    let count = parseInt(localStorage.getItem('activeAthletes') || '91', 10);
-    count += 1;
-    localStorage.setItem('activeAthletes', count);
-    
-    const countEl = document.getElementById('activeAthletesCount');
-    if (countEl) {
-      countEl.textContent = count;
-    }
+    // Increment counter di kvdb.io (cross-device)
+    fetch(_ATHLETE_URL, { cache: 'no-store' })
+      .then(r => r.text())
+      .then(txt => {
+        const next = (parseInt(txt.trim()) || 0) + 1;
+        return fetch(_ATHLETE_URL, { method: 'PUT', body: String(next) });
+      })
+      .then(() => _fetchAthleteCount())
+      .catch(() => {});
     
     window.open('https://wa.me/' + nomor + '?text=' + encodeURIComponent(msg), '_blank');
   }

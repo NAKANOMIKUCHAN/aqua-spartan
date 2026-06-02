@@ -1082,10 +1082,15 @@
 ${d.catatan ? '📝 *Catatan:* ' + d.catatan + '\n' : ''}
 Mohon konfirmasi pendaftaran. Terima kasih! 🙏`;
 
-    // Increment active athletes count in localStorage
-    let count = parseInt(localStorage.getItem('activeAthletes') || '91', 10);
-    count += 1;
-    localStorage.setItem('activeAthletes', count);
+    // Increment counter di kvdb.io (cross-device, sama seperti index.html)
+    const _ATHLETE_URL_B = 'https://kvdb.io/SpxJLmATtBmLWfQhDm81Pb/athletes_count';
+    fetch(_ATHLETE_URL_B, { cache: 'no-store' })
+      .then(r => r.text())
+      .then(txt => {
+        const next = (parseInt(txt.trim()) || 0) + 1;
+        return fetch(_ATHLETE_URL_B, { method: 'PUT', body: String(next) });
+      })
+      .catch(() => {});
 
     window.open('https://wa.me/6285285550650?text=' + encodeURIComponent(pesan), '_blank');
     showToast('✅ WhatsApp sudah terbuka!');
