@@ -1655,12 +1655,13 @@
     }
     .splash-title {
       font-family: 'DM Serif Display', serif;
-      font-size: 2.2rem;
+      font-size: clamp(1.3rem, 5.5vw, 2.2rem);
       color: var(--white);
       cursor: default;
       overflow: hidden;
       display: inline-block;
       position: relative;
+      white-space: nowrap;
       transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
     }
     .splash-title .char {
