@@ -1531,18 +1531,6 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
       section { padding: 70px 28px; }
-      .hero {
-        align-items: stretch;
-        flex-direction: column;
-        justify-content: flex-start;
-      }
-      .hero-content {
-        margin-top: auto;
-        padding: 95px 28px 70px !important; /* safe spacing under fixed navbar */
-      }
-      .hero h1 {
-        font-size: 3.5rem;
-      }
       .features-inner, .register-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
       .features-right { grid-template-columns: repeat(4, 1fr); }
       .features-right .stat-box:first-child { grid-column: auto; }
@@ -1574,11 +1562,12 @@
         justify-content: space-between;
       }
       .hero-stat-num {
-        font-size: clamp(1.8rem, 5.5vw, 2.5rem);
+        font-size: clamp(2.2rem, 6.5vw, 2.6rem);
       }
       .hero-stat-label {
-        font-size: clamp(0.6rem, 1.8vw, 0.78rem);
+        font-size: clamp(0.72rem, 2.2vw, 0.8rem);
         white-space: nowrap;
+        letter-spacing: -0.2px;
       }
       section { padding: 56px 20px; }
       .coach-card { padding: 28px 20px; }
@@ -2196,7 +2185,7 @@
       }
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 768px) {
       /* Mobile splash screen adjustments placed at the end to prevent global style override */
       .splash-content {
         gap: 24px;
@@ -2212,7 +2201,8 @@
         height: clamp(40px, 11vw, 50px);
       }
       .splash-title {
-        font-size: clamp(0.9rem, 4.6vw, 1.8rem);
+        font-size: clamp(1.4rem, 5.8vw, 2rem);
+        letter-spacing: -0.8px;
       }
       .splash-btn {
         padding: 16px 40px;
