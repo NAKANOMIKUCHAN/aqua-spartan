@@ -1661,10 +1661,9 @@
     }
     .splash-title {
       font-family: 'DM Serif Display', serif;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       color: var(--white);
       cursor: default;
-      overflow: hidden;
       display: inline-block;
       position: relative;
       white-space: nowrap;
@@ -2192,27 +2191,16 @@
     }
 
     @media (max-width: 768px) {
-      /* Mobile splash screen adjustments placed at the end to prevent global style override */
-      .splash-content {
-        gap: 24px;
-        padding: 0 20px;
-        box-sizing: border-box;
-        width: 100%;
-      }
+      /* Mobile splash screen adjustments */
       .splash-logo {
-        font-size: clamp(2rem, 6.5vw, 2.5rem);
+        font-size: clamp(2.2rem, 7vw, 2.5rem);
       }
       .splash-logo .wave-icon {
-        width: clamp(40px, 11vw, 50px);
-        height: clamp(40px, 11vw, 50px);
+        width: clamp(44px, 12vw, 54px);
+        height: clamp(44px, 12vw, 54px);
       }
       .splash-title {
-        font-size: clamp(1.4rem, 5.8vw, 2rem);
-        letter-spacing: -0.8px;
-      }
-      .splash-btn {
-        padding: 16px 40px;
-        font-size: 1rem;
+        font-size: clamp(1.5rem, 5.8vw, 2.2rem);
       }
     }
   </style>
