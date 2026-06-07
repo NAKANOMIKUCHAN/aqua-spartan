@@ -1612,13 +1612,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
+      gap: 24px;
       position: relative;
       z-index: 10;
     }
     .splash-logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.8rem;
+      font-size: clamp(2.2rem, 7vw, 2.8rem);
       letter-spacing: 3px;
       color: var(--white);
       display: flex;
@@ -1637,8 +1637,8 @@
       color: var(--aqua);
     }
     .splash-logo .wave-icon {
-      width: 54px;
-      height: 54px;
+      width: clamp(44px, 12vw, 54px);
+      height: clamp(44px, 12vw, 54px);
       border-radius: 50%;
       overflow: hidden;
       border: 2px solid var(--aqua);
@@ -1655,7 +1655,7 @@
     }
     .splash-title {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+      font-size: clamp(1.8rem, 5.8vw, 2.2rem);
       color: var(--white);
       cursor: default;
       overflow: hidden;
@@ -1731,10 +1731,10 @@
       background: linear-gradient(135deg, var(--wave), var(--aqua));
       color: var(--navy);
       border: none;
-      padding: 14px 36px;
+      padding: 16px 40px;
       border-radius: 100px;
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       opacity: 0;
