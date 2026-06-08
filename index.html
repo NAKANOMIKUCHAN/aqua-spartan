@@ -2334,7 +2334,7 @@
         <div class="stat-label">Program Tersedia</div>
       </div>
       <div class="stat-box">
-        <span class="stat-num">98%</span>
+        <span class="stat-num" id="parentSatisfaction" data-target="98">0%</span>
         <div class="stat-label">Orang Tua Puas</div>
       </div>
     </div>
@@ -3122,10 +3122,10 @@
     const timer = setInterval(() => {
       current += step;
       if (current >= target) {
-        el.textContent = target + (target >= 100 ? '+' : '');
+        el.textContent = target + (el.id === 'parentSatisfaction' ? '%' : (target >= 100 ? '+' : ''));
         clearInterval(timer);
       } else {
-        el.textContent = Math.floor(current);
+        el.textContent = Math.floor(current) + (el.id === 'parentSatisfaction' ? '%' : '');
       }
     }, 20);
   }
@@ -3324,19 +3324,31 @@
     });
   }
 
-  // Hitung & update rating orang tua di hero secara real-time
+  // Hitung & update rating orang tua di hero serta persentase kepuasan secara real-time
   function updateParentRating(allFeedback) {
     const parentRatingEl = document.getElementById('parentRating');
-    if (!parentRatingEl) return;
-    if (!allFeedback || allFeedback.length === 0) {
-      parentRatingEl.textContent = '5★';
-      return;
+    const parentSatEl = document.getElementById('parentSatisfaction');
+    
+    let avgRating = 5;
+    let satisfactionPct = 98;
+    
+    if (allFeedback && allFeedback.length > 0) {
+      const totalRating = allFeedback.reduce((sum, item) => sum + (item.rating || 5), 0);
+      avgRating = totalRating / allFeedback.length;
+      
+      const satisfiedCount = allFeedback.filter(item => (item.rating || 5) >= 4).length;
+      satisfactionPct = Math.round((satisfiedCount / allFeedback.length) * 100);
     }
-    const totalRating = allFeedback.reduce((sum, item) => sum + (item.rating || 5), 0);
-    const avgRating = totalRating / allFeedback.length;
-    // Tampilkan desimal (misal 4.8★) atau angka bulat (misal 5★)
-    const formattedRating = avgRating % 1 === 0 ? `${avgRating}★` : `${avgRating.toFixed(1)}★`;
-    parentRatingEl.textContent = formattedRating;
+    
+    if (parentRatingEl) {
+      const formattedRating = avgRating % 1 === 0 ? `${avgRating}★` : `${avgRating.toFixed(1)}★`;
+      parentRatingEl.textContent = formattedRating;
+    }
+    
+    if (parentSatEl) {
+      parentSatEl.setAttribute('data-target', satisfactionPct);
+      parentSatEl.textContent = `${satisfactionPct}%`;
+    }
   }
 
   // Render ulasan ke dalam DOM (tanpa loading spinner)
