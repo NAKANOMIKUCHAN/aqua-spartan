@@ -188,22 +188,23 @@
       display: flex;
       align-items: flex-end;
       overflow: hidden;
+      clip-path: inset(0);
       background: var(--navy);
     }
 
     .hero-bg {
       position: absolute;
-      inset: -20px;
+      inset: 0;
       background: url('foto_profil.jpeg') center/cover no-repeat;
       opacity: 0.45;
-      transform: scale(1.05);
+      transform: scale(1.1);
       animation: slowZoom 20s ease infinite alternate;
       filter: blur(3px);
     }
 
     @keyframes slowZoom {
-      from { transform: scale(1.05); }
-      to { transform: scale(1.15); }
+      from { transform: scale(1.1); }
+      to { transform: scale(1.2); }
     }
 
     .hero-gradient {
@@ -1908,8 +1909,11 @@
       transition: transform 0.4s ease, opacity 0.4s ease;
       transition-delay: 0s !important;
     }
-    @keyframes splashSpin    .elevyn-section {
+    /* NOTE: fixed corrupted CSS where a stray keyframes name was concatenated */
+
+    .elevyn-section {
       background: linear-gradient(to bottom, #061b33 0%, #030712 15%, #030712 85%, #040f1e 100%);
+
       padding: 120px 48px;
       position: relative;
       overflow: hidden;
@@ -3100,10 +3104,13 @@
       }, 600);
       
       // Step 3: Enable scrolling
+      // Pakai delay yang sama dengan exit animation agar tidak terjadi reflow double.
       setTimeout(() => {
         document.body.style.overflow = '';
-      }, 1400);
+      }, 1200);
     }
+
+
     
     if (splashBtn) {
       splashBtn.addEventListener('click', dismissSplash);
